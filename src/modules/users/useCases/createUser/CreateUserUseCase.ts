@@ -1,5 +1,5 @@
-import { User } from "../../model/User";
-import { IUsersRepository } from "../../repositories/IUsersRepository";
+import { User } from '../../model/User';
+import { IUsersRepository } from '../../repositories/IUsersRepository';
 
 interface IRequest {
     name: string;
@@ -13,7 +13,7 @@ class CreateUserUseCase {
         const emailAlreadyUsed = this.usersRepository.findByEmail(email);
 
         if (emailAlreadyUsed) {
-            throw new Error("Email already used");
+            throw new Error('Email already used');
         }
 
         const user = this.usersRepository.create({

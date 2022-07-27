@@ -1,0 +1,281 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "RentalX Documentation",
+        "description": "This is an API using SOLID",
+        "version": "1.0.0",
+        "contact": {
+            "email": "lucasantoniofranco@yahoo.com.br"
+        }
+    },
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": ["users"],
+                "summary": "Create a new user",
+                "requestBody": {
+                    "description": "Necessary fields to create a new user",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name" : {
+                                        "type": "string",
+                                        "example": "Lucas"
+                                    },
+                                    "email" : {
+                                        "type": "string",
+                                        "example": "Lucas@example.com"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Success!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "admin": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "id": {
+                                            "type": "string",
+                                            "example": "uuid"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Lucas"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "Lucas@example.com"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "date-time"
+                                        },
+                                        "update_at": {
+                                            "type": "string",
+                                            "example": "date-time"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Email already in use",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Email already in use"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }   
+            },
+            "get": {
+                "tags": ["users"],
+                "summary": "Return all the users",
+                "description": "Only the admin can access this",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "admin": {
+                                                "type": "boolean"
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "admin": false,
+                                        "id": "f5f8c9c0-8f0c-4b3f-b8f9-f8b9f8b9f8b9",
+                                        "name": "Lucas",
+                                        "email": "lucas@gmail.com",
+                                        "created_at": "2020-05-06T21:00:00.000Z",
+                                        "updated_at": "2020-05-06T21:00:00.000Z"
+                                    },
+                                    {
+                                        "admin": false,
+                                        "id": "f5f8c9c0-8f0c-4b3f-b8f9-f8b9f8b9f8b9",
+                                        "name": "Rocketseat",
+                                        "email": "oi@rocketseat.com",
+                                        "created_at": "2020-05-06T21:00:00.000Z",
+                                        "updated_at": "2020-05-06T21:00:00.000Z"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "User without permissions or User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "typer": "string",
+                                            "example": "You need to be an administrator to list all users"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}": {
+            "get": {
+                "tags": ["users"],
+                "summary": "Return an specific user",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "admin": false,
+                                    "id": "f5f8c9c0-8f0c-4b3f-b8f9-f8b9f8b9f8b9",
+                                    "name": "Lucas",
+                                    "email": "lucas@gmail.com",
+                                    "created_at": "2020-05-06T21:00:00.000Z",
+                                    "update_at": "2020-05-06T21:00:00.000Z"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}/admin": {
+            "patch": {
+                "tags": ["users"],
+                "summary": "Turn a user into a admin",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "The user ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description":"Successful operation",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "admin": true,
+                                    "id": "f5f8c9c0-8f0c-4b3f-b8f9-f8b9f8b9f8b9",
+                                    "name": "Lucas",
+                                    "email": "lucas@gmail.com",
+                                    "created_at": "2020-05-06T21:00:00.000Z",
+                                    "updated_at": "2020-05-06T21:00:00.000Z"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description":"User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example":"User not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
